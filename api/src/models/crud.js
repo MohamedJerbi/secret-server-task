@@ -1,13 +1,13 @@
-import { Types } from 'mongoose';
 import Secret from './secret';
 
-//Types.ObjectId
+const projection = '-_id hash secretText expiresAt createdAt';
 
-const getSecretByHash = (hash) => {};
-
-const addSecret = ({ name, value }) => {};
-
-export default {
-  getSecretByHash,
-  addSecret,
+export const getSecretByHash = (hash) => {
+  return Secret.findOne({ hash }).select(projection).exec();
 };
+
+export const addSecret = ({ secretText, expiresAt }) => {
+  return new Secret({ secretText, expiresAt }).save();
+};
+
+export default { getSecretByHash, addSecret };

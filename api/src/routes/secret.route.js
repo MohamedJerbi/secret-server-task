@@ -1,15 +1,9 @@
 import { Router } from 'express';
-import {
-  getAllSecrets,
-  getSecretByHash,
-  createSecret,
-} from '../controllers/secret.controller';
+import { getSecret, createSecret } from '../controllers/secret.controller';
 
 const router = Router();
 
-router.get('/all', getAllSecrets);
-router.get('/secret/:hash', getSecretByHash);
-
-router.post('/add', createSecret);
+router.get('/secret/:hash', getSecret);
+router.post('/secret', createSecret);
 
 export default router;
