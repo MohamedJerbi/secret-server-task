@@ -1,6 +1,6 @@
 export interface CreateSecretBody {
   secretText: string;
-  expiresAfter: Date;
+  expiresAfter: number;
 }
 
 export interface Secret {

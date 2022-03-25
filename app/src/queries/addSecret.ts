@@ -1,9 +1,15 @@
-import axios from "axios";
-import { Secret, CreateSecretBody } from "../types/Secret";
+import axios, { AxiosRequestConfig } from "axios";
+import Secret, { CreateSecretBody } from "../types/Secret";
+import { API_URL } from "../config/defaultConfigs";
 
-export const createSecret: (secret: CreateSecretBody) => Promise<Secret> = (
+interface AxiosRequestConfigSecret extends AxiosRequestConfig {
+  data: Secret;
+}
+
+export const createSecret: (
   secret: CreateSecretBody
-) => {
-  const baseURL: string = "http://localhost:3333/secret";
-  return axios.post(baseURL, secret);
+) => Promise<AxiosRequestConfigSecret> = (secret: CreateSecretBody) => {
+  return axios.post(process.env.API_URL || API_URL, secret);
 };
+
+export default createSecret;
