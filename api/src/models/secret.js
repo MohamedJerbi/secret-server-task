@@ -10,7 +10,7 @@ const secretSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    expiresAt: { type: Date, required: true },
+    expiresAt: { type: Number, required: true },
   },
   { timestamps: true }
 );
