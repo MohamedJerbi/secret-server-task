@@ -5,6 +5,7 @@ import cors from 'cors';
 require('dotenv').config();
 
 import connect from '../connect';
+import secretRouter from './routes/secret.route';
 
 export const app = express();
 
@@ -14,7 +15,7 @@ app.use(json({ limit: '15mb' }));
 app.use(urlencoded({ extended: true, limit: '15mb' }));
 app.use(morgan('dev'));
 
-app.get('/api', (req, res) => res.send('success'));
+app.use('/', secretRouter);
 
 export const start = async () => {
   try {
