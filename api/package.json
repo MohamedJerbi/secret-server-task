@@ -29,7 +29,7 @@
     "mongoose": "^5.12.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
-    "validator": "^13.5.2"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "prettier": "2.2.1",
