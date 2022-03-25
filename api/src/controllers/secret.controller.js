@@ -4,6 +4,8 @@ const handleFail = (res, status, message) => {
   res.status(status || 500).send({ error: message || 'An error occured' });
 };
 
+const maximumDate = new Date(9999, 0, 0);
+
 export const getSecret = async (req, res) => {
   try {
     const secret = await getSecretByHash(req.params.hash);
@@ -19,14 +21,13 @@ export const getSecret = async (req, res) => {
 export const createSecret = (req, res) => {
   try {
     const { secretText, expiresAfter } = req.body;
-    console.log(
-      new Date(),
-      expiresAfter,
-      new Date(new Date().getTime() + expiresAfter * 1000)
-    );
     addSecret({
       secretText,
-      expiresAt: new Date(new Date().getTime() + expiresAfter * 1000),
+      expiresAt:
+        // if expiresAfter is 0 then we use a maximum dateit has no expiration date and we use maximum date
+        (expiresAfter &&
+          new Date(new Date().getTime() + expiresAfter * 1000)) ||
+        maximumDate,
     })
       .then(({ hash, secretText, expiresAt, createdAt }) => {
         return res.status(200).send({ hash, secretText, expiresAt, createdAt });
