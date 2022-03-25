@@ -10,9 +10,10 @@ const secretSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    expiresAt: { type: Number, required: true },
+    expiresAt: { type: Date, required: true },
   },
-  { timestamps: true }
+  // we set default time based on server timezone to avoid expiration date calculation errors
+  { timestamps: { default: new Date() } }
 );
 
 secretSchema.pre('save', function (next) {

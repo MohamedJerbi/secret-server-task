@@ -1,32 +1,42 @@
 import { getSecretByHash, addSecret } from '../models/crud';
 
-const handleFail = (res, msg) => {
-  res.send(msg || 'An error occured');
+const handleFail = (res, status, message) => {
+  res.status(status || 500).send({ error: message || 'An error occured' });
 };
 
-export const getSecret = (req, res) => {
+export const getSecret = async (req, res) => {
   try {
-    getSecretByHash(req.params.hash)
-      .then((r) => res.send(r))
-      .catch((e) => {
-        throw new Error(e);
-      });
+    const secret = await getSecretByHash(req.params.hash);
+    if (secret) {
+      return res.status(200).send(secret);
+    }
+    return handleFail(res, 404, "Secret doesn't exist or expired");
   } catch (e) {
-    console.log('Error at getSecret: ', e);
-    handleFail(res);
+    return handleFail(res);
   }
 };
 
 export const createSecret = (req, res) => {
   try {
-    addSecret(req.body)
-      .then((r) => res.send(r))
+    const { secretText, expiresAfter } = req.body;
+    console.log(
+      new Date(),
+      expiresAfter,
+      new Date(new Date().getTime() + expiresAfter * 1000)
+    );
+    addSecret({
+      secretText,
+      expiresAt: new Date(new Date().getTime() + expiresAfter * 1000),
+    })
+      .then(({ hash, secretText, expiresAt, createdAt }) => {
+        return res.status(200).send({ hash, secretText, expiresAt, createdAt });
+      })
       .catch((e) => {
         throw new Error(e);
       });
   } catch (e) {
     console.log('Error at createSecret: ', e);
-    handleFail(res);
+    return handleFail(res);
   }
 };
 
