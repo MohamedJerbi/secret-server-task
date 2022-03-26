@@ -12,7 +12,7 @@ export const app = express();
 app.disable('x-powered-by');
 app.use(cors());
 app.use(json());
-app.use(urlencoded());
+app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use('/', secretRouter);
