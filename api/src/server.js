@@ -17,11 +17,14 @@ app.use(morgan('dev'));
 
 app.use('/', secretRouter);
 
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
+
 export const start = async () => {
   try {
     await connect(process.env.CONNECT);
-    app.listen(process.env.port, () => {
-      console.log(`REST API on http://localhost:${process.env.port}`);
+    app.listen(port, host, () => {
+      console.log(`REST API on http://localhost:${process.env.PORT}`);
     });
   } catch (e) {
     console.error(e);
