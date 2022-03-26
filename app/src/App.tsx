@@ -17,6 +17,8 @@ import { successMessages, errorMessages } from "./STATIC/alerts";
 import "./App.css";
 
 const secretInputID = "secretInput";
+const expiresAfterInputID = "expiresInput";
+const maxExpires = 999999999999;
 
 function App() {
   const [secretText, setSecretText] = useState<string>("");
@@ -60,6 +62,12 @@ function App() {
       setTimeout(() => setError(""), 5000);
       return setSubmit(true);
     }
+    if (expiresAfter > maxExpires) {
+      document.getElementById(expiresAfterInputID)?.focus();
+      handleSetError(errorMessages["expiration-valid"]);
+      setTimeout(() => setError(""), 5000);
+      return setSubmit(true);
+    }
     setLoading(true);
     createSecret({ secretText, expiresAfter })
       .then(
@@ -69,13 +77,16 @@ function App() {
             `${process.env.API_URL || API_URL}/${hash}`,
           ]);
           handleSetSuccess(successMessages["secret-added"]);
+          setSubmit(false);
           setSecretText("");
         },
         (error) => {
           handleSetError(error.toString());
         }
       )
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, [
     secretText,
     expiresAfter,
@@ -113,6 +124,7 @@ function App() {
             </Grid>
             <Grid className="flex-center" item md={3} xs={4}>
               <TextField
+                id={expiresAfterInputID}
                 label="Expires After"
                 type={"number"}
                 value={expiresAfter}
