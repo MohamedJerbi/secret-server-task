@@ -2,3 +2,25 @@
   display: flex;
   align-items: center;
 }
+
+.flex-center-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-container {
+  margin-top: 20vh;
+  margin-bottom: 20vh;
+}
+
+@media screen and (max-width: 768px) {
+  .grid-container {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+  }
+}
+
+.input {
+  color: #1976d2 !important;
+}
