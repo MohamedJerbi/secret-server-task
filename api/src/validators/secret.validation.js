@@ -6,7 +6,7 @@ const getSecretSchema = yup.object().shape({
 
 const createSecretSchema = yup.object().shape({
   secretText: yup.string().required(),
-  expiresAfter: yup.number().required(),
+  expiresAfter: yup.number().min(0).max(999999999999).required(),
 });
 
 export const getSecretValidation = async (req, res, next) => {
